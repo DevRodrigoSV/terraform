@@ -2,7 +2,7 @@ resource "aws_instance" "amazon-linux" {
   ami           = "ami-03400c3b73b5086e9"
   instance_type = "t2.medium"
   key_name      ="ec2-user"
-  vpc_security_group_ids = [aws_security_group.jenkins-nodes-sg.id]
+  vpc_security_group_ids = [aws_security_group.amazon-linux-sg.id]
 
   tags = {
     Name = "amazon-linux-2"
