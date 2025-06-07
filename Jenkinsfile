@@ -5,8 +5,11 @@ pipeline {
             args '--entrypoint=""'
         }
     }
+    options {
+        ansiColor('xterm')
+    }    
     parameters {
-        choice(name: 'Action', choices: ['select', 'apply', 'destroy'], description: 'Terraform action')
+        choice(name: 'action', choices: ['select', 'apply', 'destroy'], description: 'Terraform action')
     }
     environment {
         AWS_ACCESS_KEY_ID = credentials('aws-access-key')
@@ -14,27 +17,27 @@ pipeline {
         AWS_DEFAULT_REGION = 'eu-west-1'
     }
     stages {
-      stage('init') {
-        steps {
-          sh 'env | sort'
-          sh 'terraform init'
+        stage('init') {
+            steps {
+                sh 'env | sort'
+                sh 'terraform init'
+            }
         }
-      }
-      stage('apply') {
-        when {
-          expression { params.action == 'apply' }
+        stage('apply') {
+            when {
+                expression { params.action == 'apply' }
+            }
+            steps {
+                sh 'terraform apply -auto-approve'
+            }
         }
-        steps {
-          sh 'terraform apply -auto-approve'
-        }
-      }
-      stage('destroy') {
-        when {
-          expression { params.action == 'destroy' }
-        }
-        steps {
-          sh 'terraform destroy -auto-approve'
-        }
-      }
-    }
+        stage('destroy') {
+            when {
+                expression { params.action == 'destroy' }
+            }
+            steps {
+                sh 'terraform destroy -auto-approve'
+            }
+        }  
+    }   
 }
