@@ -4,10 +4,7 @@ pipeline {
             image 'hashicorp/terraform:1.11.4'
             args '--entrypoint=""'
         }
-    }
-    options {
-        ansiColor('xterm')
-    }    
+    } 
     parameters {
         choice(name: 'action', choices: ['select', 'apply', 'destroy'], description: 'Terraform action')
     }
